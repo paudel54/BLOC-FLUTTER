@@ -4,9 +4,10 @@ class CounterState extends Equatable {
   final int counter;
   const CounterState({this.counter = 0});
 
-  CounterState copyWith({int? counter}) {
+  CounterState copyWith({int? newCounterValue}) {
     return CounterState(
-      counter: counter ?? this.counter,
+      // ignore: unnecessary_this
+      counter: newCounterValue ?? counter,
     );
   }
 

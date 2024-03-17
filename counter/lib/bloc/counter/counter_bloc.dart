@@ -9,10 +9,10 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
   }
 
   void _increment(IncrementCounter event, Emitter<CounterState> emit) {
-    emit(state.copyWith(counter: state.counter + 1));
+    emit(state.copyWith(newCounterValue: state.counter + 1));
   }
 
   void _decrement(DecrementCounter event, Emitter<CounterState> emit) {
-    emit(state.copyWith(counter: state.counter - 1));
+    emit(state.copyWith(newCounterValue: state.counter - 1));
   }
 }
