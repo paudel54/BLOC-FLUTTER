@@ -1,1 +1,5 @@
-create a flutter expense tracker app with BLOC architecture where the first home screen displays the total net balance, total income and expense. The homescreen must contain the floating action button if pressed must pop a dialog box where user can toggle a switch for income and expense and enter an amount with text remark which gets displayed as card on the screen . 
+create a flutter expense tracker app with BLOC architecture
+where the first home screen displays the total net balance,
+total income and expense.
+The homescreen must contain the floating action button if pressed must pop a dialog box
+where user can toggle a switch for income and expense and enter an amount with text remark which gets displayed as card on the screen . 
