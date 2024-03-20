@@ -12,8 +12,8 @@ class TodoStarted extends TodoEvent {}
 class AddTodo extends TodoEvent {
   // constructor that takes Todo object as a parameter, indicating the todo item will be added.
   final Todo todo;
-  const AddTodo(this.todo);
 
+  const AddTodo(this.todo);
   @override
   List<Object> get props => [todo];
 }

@@ -151,7 +151,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Theme.of(context).colorScheme.primary,
                       elevation: 1,
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       child: Slidable(
                           key: const ValueKey(0),
                           startActionPane: ActionPane(

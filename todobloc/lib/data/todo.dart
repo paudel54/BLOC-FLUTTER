@@ -17,6 +17,7 @@ class Todo {
 
 //Create todo object from JSON map.
   factory Todo.fromJson(Map<String, dynamic> json) {
+    print('3 from the from json in data todo.dart');
     return Todo(
         title: json['title'],
         subtitle: json['subtitle'],
@@ -24,17 +25,7 @@ class Todo {
   }
 //convert Todo object to json map
   Map<String, dynamic> toJson() {
+    print('6 from the to json in data todo.dart');
     return {'title': title, 'subtitle': subtitle, 'isDone': isDone};
-  }
-
-//overides the 'toString' method to provide a custom string representation of a 'Todo' object. It returns a formatted string
-//including 'title', 'subtitle' and 'isDone' properties.
-  @override
-  String toString() {
-    return '''Todo: {
-			title: $title\n
-			subtitle: $subtitle\n
-			isDone: $isDone\n
-		}''';
   }
 }

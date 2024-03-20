@@ -14,7 +14,9 @@ class TodoBloc extends HydratedBloc<TodoEvent, TodoState> {
   }
 
   void _onStarted(TodoEvent event, Emitter<TodoState> emit) {
+    // print(' on fresh install skip if block and emits status to success todoStarted');
     if (state.status == TodoStatus.success) return;
+    // print('todo started success next line');
     emit(state.copyWith(todos: state.todos, status: TodoStatus.success));
   }
 
@@ -22,6 +24,7 @@ class TodoBloc extends HydratedBloc<TodoEvent, TodoState> {
     AddTodo event,
     Emitter<TodoState> emit,
   ) {
+    // print('Checking the state ${state}');
     emit(state.copyWith(status: TodoStatus.loading));
     try {
       List<Todo> temp = [];
@@ -61,11 +64,20 @@ class TodoBloc extends HydratedBloc<TodoEvent, TodoState> {
 
   @override
   TodoState? fromJson(Map<String, dynamic> json) {
+    // print('printing the state to convert from json to map in hydrated bloc');
+    //{todo: [{title: estt, subtitle: bbb, isDone: false}, {title: ram, subtitle: bhai, isDone: false}], status: success}
+    // print(TodoState.fromJson(json)); => Converts into dart object
+    //TodoState([Instance of 'Todo', Instance of 'Todo'], TodoStatus.success)
+    print('1 from the from json in data todo_bloc.dart');
     return TodoState.fromJson(json);
   }
 
   @override
   Map<String, dynamic>? toJson(TodoState state) {
+    // print('printing state before converting to json on hydrated bloc');
+    //{todo: [Instance of 'Todo', Instance of 'Todo'], status: success}
+    // print(state.toJson());
+    print('4 from the to json in data todo_bloc.dart');
     return state.toJson();
   }
 }
