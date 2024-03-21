@@ -1,3 +1,7 @@
+import 'package:expense_tracker/bloc/transaction_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../data/transactions.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../widgets/input_form.dart';
@@ -22,6 +26,18 @@ class _AddExpenseState extends State<AddExpense> {
       DateTime.now(),
     );
     super.initState();
+  }
+
+  addTransaction(Transaction transaction) {
+    context.read<TransactionBloc>().add(
+          AddTransaction(transaction),
+        );
+  }
+
+  removeTransaction(Transaction transaction) {
+    context.read<TransactionBloc>().add(
+          RemoveTransaction(transaction),
+        );
   }
 
   @override
@@ -123,6 +139,16 @@ class _AddExpenseState extends State<AddExpense> {
                 CustomTextButton(
                   text: 'Save',
                   onPressed: () {
+                    print(
+                        'Printing select date************************************');
+
+                    addTransaction(Transaction(
+                        value: double.parse(expenseController.text),
+                        isIncome: true,
+                        remark: remarkController.text,
+                        date: selectDate));
+                    expenseController.text = '';
+                    remarkController.text = '';
                     Navigator.pop(context);
                   },
                 )

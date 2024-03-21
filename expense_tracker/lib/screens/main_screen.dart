@@ -1,5 +1,7 @@
+import 'package:expense_tracker/bloc/transaction_bloc.dart';
 import 'package:expense_tracker/widgets/income_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -164,88 +166,106 @@ class MainScreen extends StatelessWidget {
               height: 20,
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: 1,
-                itemBuilder: (context, i) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 16),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Container(
-                                      width: 38,
-                                      height: 38,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[400],
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ),
-                                    // transactionsData[i]['icon'],
-                                    const Icon(
-                                      Icons.currency_rupee,
-                                      color: Colors.white,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  width: 12,
-                                ),
-                                Text(
-                                  // transactionsData[i]['name'],
-                                  'Food',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onBackground,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
+              child: BlocBuilder<TransactionBloc, TransactionState>(
+                builder: (context, state) {
+                  if (state.status == TransactionStatus.success) {
+                    return ListView.builder(
+                      itemCount: state.transactions.length,
+                      itemBuilder: (context, i) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  // transactionsData[i]['totalAmount'],
-                                  'Rs.698',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onBackground,
-                                    fontWeight: FontWeight.w400,
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          Container(
+                                            width: 38,
+                                            height: 38,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey[400],
+                                              shape: BoxShape.circle,
+                                            ),
+                                          ),
+                                          // transactionsData[i]['icon'],
+                                          const Icon(
+                                            Icons.currency_rupee,
+                                            color: Colors.white,
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        width: 12,
+                                      ),
+                                      Text(
+                                        // transactionsData[i]['name'],
+                                        // 'Food',
+                                        state.transactions[i].remark,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onBackground,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                Text(
-                                  // transactionsData[i]['date'],
-                                  'March 22',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color:
-                                        Theme.of(context).colorScheme.outline,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        // transactionsData[i]['totalAmount'],
+                                        // 'Rs.698',
+                                        'Rs: ${state.transactions[i].value.toString()}',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color:
+                                              state.transactions[i].isIncome ==
+                                                      true
+                                                  ? Colors.green
+                                                  : Colors.red,
+                                        ),
+                                      ),
+                                      Text(
+                                        // transactionsData[i]['date'],
+                                        // 'March 22',
+                                        state.transactions[i].date.toString(),
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .outline,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  } else if (state.status == TransactionStatus.initial) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    return Container();
+                  }
                 },
               ),
             )
