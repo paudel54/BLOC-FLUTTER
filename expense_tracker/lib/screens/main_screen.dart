@@ -2,9 +2,12 @@ import 'package:expense_tracker/bloc/transaction_bloc.dart';
 import 'package:expense_tracker/widgets/income_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
+  const MainScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -239,9 +242,9 @@ class MainScreen extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        // transactionsData[i]['date'],
-                                        // 'March 22',
-                                        state.transactions[i].date.toString(),
+                                        // state.transactions[i].date.toString(),
+                                        DateFormat('yyyy-MM-dd')
+                                            .format(state.transactions[i].date),
                                         style: TextStyle(
                                           fontSize: 14,
                                           color: Theme.of(context)

@@ -24,3 +24,5 @@ class RemoveTransaction extends TransactionEvent {
 }
 
 class UpdateTransaction extends TransactionEvent {}
+
+class ToggleSwitch extends TransactionEvent {}

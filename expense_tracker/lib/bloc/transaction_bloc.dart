@@ -11,6 +11,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     on<AddTransaction>(_onAddTransaction);
     on<RemoveTransaction>(_onRemoveTransaction);
     on<UpdateTransaction>(_onUpdateTransaction);
+    on<ToggleSwitch>(_onToggleSwitch);
   }
 
   void _onStarted(TransactionEvent event, Emitter<TransactionState> emit) {
@@ -47,4 +48,8 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
   void _onUpdateTransaction(
       UpdateTransaction event, Emitter<TransactionState> emit) {}
+
+  void _onToggleSwitch(ToggleSwitch event, Emitter<TransactionState> emit) {
+    emit(state.copyWith(isSwitch: !state.isSwitch));
+  }
 }

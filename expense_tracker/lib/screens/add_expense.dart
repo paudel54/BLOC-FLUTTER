@@ -8,7 +8,9 @@ import '../widgets/input_form.dart';
 import '../widgets/button.dart';
 
 class AddExpense extends StatefulWidget {
-  const AddExpense({super.key});
+  const AddExpense({
+    super.key,
+  });
 
   @override
   State<AddExpense> createState() => _AddExpenseState();
@@ -76,7 +78,17 @@ class _AddExpenseState extends State<AddExpense> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Switch(value: true, onChanged: (value) {}),
+                    BlocBuilder<TransactionBloc, TransactionState>(
+                      builder: (context, state) {
+                        return Switch(
+                            value: state.isSwitch,
+                            onChanged: (value) {
+                              context
+                                  .read<TransactionBloc>()
+                                  .add(ToggleSwitch());
+                            });
+                      },
+                    ),
                     const Text(
                       'Income',
                       style: TextStyle(
@@ -136,20 +148,24 @@ class _AddExpenseState extends State<AddExpense> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                CustomTextButton(
-                  text: 'Save',
-                  onPressed: () {
-                    print(
-                        'Printing select date************************************');
+                BlocBuilder<TransactionBloc, TransactionState>(
+                  builder: (context, state) {
+                    return CustomTextButton(
+                      text: 'Save',
+                      onPressed: () {
+                        print(
+                            'Printing select date************************************');
 
-                    addTransaction(Transaction(
-                        value: double.parse(expenseController.text),
-                        isIncome: true,
-                        remark: remarkController.text,
-                        date: selectDate));
-                    expenseController.text = '';
-                    remarkController.text = '';
-                    Navigator.pop(context);
+                        addTransaction(Transaction(
+                            value: double.parse(expenseController.text),
+                            isIncome: state.isSwitch,
+                            remark: remarkController.text,
+                            date: selectDate));
+                        expenseController.text = '';
+                        remarkController.text = '';
+                        Navigator.pop(context);
+                      },
+                    );
                   },
                 )
               ],
