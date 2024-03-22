@@ -87,7 +87,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
   void _onRemoveTransaction(
       RemoveTransaction event, Emitter<TransactionState> emit) {
-    // print('I am trying to remove the transaction*********************');
+    print('I am trying to remove the transaction*********************');
     emit(state.copyWith(status: TransactionStatus.loading));
     try {
       state.transactions.remove(event.transaction);

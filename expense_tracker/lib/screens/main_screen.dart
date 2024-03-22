@@ -17,6 +17,7 @@ class MainScreen extends StatelessWidget {
       context.read<TransactionBloc>().add(
             RemoveTransaction(transaction),
           );
+      context.read<TransactionBloc>().add(CalculateTransaction());
     }
 
     return SafeArea(
