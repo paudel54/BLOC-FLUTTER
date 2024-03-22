@@ -19,30 +19,55 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     on<RemoveTransaction>(_onRemoveTransaction);
     on<UpdateTransaction>(_onUpdateTransaction);
     on<ToggleSwitch>(_onToggleSwitch);
+    on<CalculateTransaction>(_onCalculateTransactions);
   }
 
-  void _onStarted(TransactionEvent event, Emitter<TransactionState> emit) {
-    // print('hello from on started, ');
+  void _onStarted(AppStarted event, Emitter<TransactionState> emit) {
+    print('hello from on started, want to computer the list values');
     if (state.status == TransactionStatus.success) return;
-    final totalExpense = state.transactions.fold(
+    // final totalExpense = state.transactions.fold(
+    //   0.0,
+    //   (sum, transaction) =>
+    //       sum + (transaction.isIncome ? 0 : transaction.value),
+    // );
+    // final totalIncome = state.transactions.fold(
+    //     0.0,
+    //     (sum, transaction) =>
+    //         sum + (transaction.isIncome ? transaction.value : 0));
+    // final netBalance = totalExpense - totalIncome;
+    // emit(state.copyWith(
+    //   transactions: state.transactions,
+    //   status: TransactionStatus.success,
+    //   totalExpense: totalExpense,
+    //   totalIncome: totalIncome,
+    //   netBalance: netBalance,
+    // ));
+    emit(state.copyWith(
+        transactions: state.transactions, status: TransactionStatus.success));
+  }
+
+  void _onCalculateTransactions(
+      CalculateTransaction event, Emitter<TransactionState> emit) {
+    print(state.transactions);
+    final totalExpense = state.transactions.fold<double>(
       0.0,
       (sum, transaction) =>
           sum + (transaction.isIncome ? 0 : transaction.value),
     );
-    final totalIncome = state.transactions.fold(
-        0.0,
-        (sum, transaction) =>
-            sum + (transaction.isIncome ? transaction.value : 0));
-    final netBalance = totalExpense - totalIncome;
+    final totalIncome = state.transactions.fold<double>(
+      0.0,
+      (sum, transaction) =>
+          sum + (transaction.isIncome ? transaction.value : 0),
+    );
+    final netBalance = totalIncome - totalExpense;
+    final updatedTransactions = List<Transaction>.from(state.transactions);
     emit(state.copyWith(
-      transactions: state.transactions,
+      transactions: updatedTransactions,
       status: TransactionStatus.success,
       totalExpense: totalExpense,
       totalIncome: totalIncome,
       netBalance: netBalance,
     ));
-    // emit(state.copyWith(
-    //     transactions: state.transactions, status: TransactionStatus.success));
   }
 
   void _onAddTransaction(AddTransaction event, Emitter<TransactionState> emit) {
@@ -62,7 +87,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
   void _onRemoveTransaction(
       RemoveTransaction event, Emitter<TransactionState> emit) {
-    print('I am trying to remove the transaction*********************');
+    // print('I am trying to remove the transaction*********************');
     emit(state.copyWith(status: TransactionStatus.loading));
     try {
       state.transactions.remove(event.transaction);

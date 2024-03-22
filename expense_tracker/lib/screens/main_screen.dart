@@ -100,59 +100,63 @@ class MainScreen extends StatelessWidget {
                   )
                 ],
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Total Balance',
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Text(
-                    'NRs: ${context.read<TransactionBloc>().state.netBalance.toStringAsFixed(2)}',
-                    style: const TextStyle(
-                      fontSize: 35,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12, horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        BlocBuilder<TransactionBloc, TransactionState>(
-                          builder: (context, state) {
-                            final totalIncome = state.totalIncome;
-                            return IncomeCard(
-                              title: 'Income',
-                              subtitle: totalIncome.toString(),
-                              // 'NRS:${context.read<TransactionBloc>().state.totalIncome.toStringAsFixed(2)}',
-                              icon: Icons.arrow_upward,
-                              color: Colors.green,
-                            );
-                          },
+              child: BlocBuilder<TransactionBloc, TransactionState>(
+                builder: (context, state) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Total Balance',
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Text(
+                        'NRs: ${context.read<TransactionBloc>().state.netBalance.toStringAsFixed(2)}',
+                        style: const TextStyle(
+                          fontSize: 35,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
                         ),
-                        IncomeCard(
-                          title: 'Expense',
-                          subtitle:
-                              'NRS: ${context.read<TransactionBloc>().state.totalExpense.toStringAsFixed(2)}',
-                          icon: Icons.arrow_downward,
-                          color: Colors.red,
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            BlocBuilder<TransactionBloc, TransactionState>(
+                              builder: (context, state) {
+                                final totalIncome = state.totalIncome;
+                                return IncomeCard(
+                                  title: 'Income',
+                                  subtitle: totalIncome.toString(),
+                                  // 'NRS:${context.read<TransactionBloc>().state.totalIncome.toStringAsFixed(2)}',
+                                  icon: Icons.arrow_upward,
+                                  color: Colors.green,
+                                );
+                              },
+                            ),
+                            IncomeCard(
+                              title: 'Expense',
+                              subtitle:
+                                  'NRS: ${context.read<TransactionBloc>().state.totalExpense.toStringAsFixed(2)}',
+                              icon: Icons.arrow_downward,
+                              color: Colors.red,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  )
-                ],
+                      )
+                    ],
+                  );
+                },
               ),
             ),
             const SizedBox(

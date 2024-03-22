@@ -34,12 +34,14 @@ class _AddExpenseState extends State<AddExpense> {
     context.read<TransactionBloc>().add(
           AddTransaction(transaction),
         );
+    context.read<TransactionBloc>().add(CalculateTransaction());
   }
 
   removeTransaction(Transaction transaction) {
     context.read<TransactionBloc>().add(
           RemoveTransaction(transaction),
         );
+    context.read<TransactionBloc>().add(CalculateTransaction());
   }
 
   @override

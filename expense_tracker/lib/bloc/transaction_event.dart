@@ -8,6 +8,8 @@ abstract class TransactionEvent extends Equatable {
 
 class AppStarted extends TransactionEvent {}
 
+class CalculateTransaction extends TransactionEvent {}
+
 class AddTransaction extends TransactionEvent {
   final Transaction transaction;
   const AddTransaction(this.transaction);
