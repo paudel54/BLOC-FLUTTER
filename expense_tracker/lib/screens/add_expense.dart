@@ -153,9 +153,6 @@ class _AddExpenseState extends State<AddExpense> {
                     return CustomTextButton(
                       text: 'Save',
                       onPressed: () {
-                        print(
-                            'Printing select date************************************');
-
                         addTransaction(Transaction(
                             value: double.parse(expenseController.text),
                             isIncome: state.isSwitch,

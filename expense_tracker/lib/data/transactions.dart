@@ -40,35 +40,3 @@ class Transaction {
     return 'Transaction{id: $id, value: $value, isIncome: $isIncome, remark: $remark, date: $date}';
   }
 }
-
-
-// class TransactionLedger {
-//   final List<Transaction> transactions;
-
-//   TransactionLedger(this.transactions);
-
-//   double get totalIncome {
-//     return transactions
-//         .where((transaction) => transaction.isIncome)
-//         .map((transaction) => transaction.value)
-//         .fold(0, (prev, curr) => prev + curr);
-//   }
-
-//   double get totalExpense {
-//     return transactions
-//         .where((transaction) => !transaction.isIncome)
-//         .map((transaction) => transaction.value)
-//         .fold(0, (prev, curr) => prev + curr);
-//   }
-
-//   double get netIncome {
-//     return totalIncome - totalExpense;
-//   }
-
-//   void addTransaction(Transaction transaction) {
-//     transactions.add(transaction);
-//   }
-
-//   void removeTransaction(Transaction transaction) {
-//     transactions.remove(transaction);
-//   }

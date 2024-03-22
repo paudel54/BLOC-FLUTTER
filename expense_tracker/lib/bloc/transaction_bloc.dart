@@ -6,7 +6,14 @@ part 'transaction_event.dart';
 part 'transaction_state.dart';
 
 class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
-  TransactionBloc() : super(const TransactionState()) {
+  TransactionBloc()
+      : super(
+          const TransactionState(
+            totalIncome: 0,
+            totalExpense: 0,
+            netBalance: 0,
+          ),
+        ) {
     on<AppStarted>(_onStarted);
     on<AddTransaction>(_onAddTransaction);
     on<RemoveTransaction>(_onRemoveTransaction);
@@ -15,12 +22,31 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   }
 
   void _onStarted(TransactionEvent event, Emitter<TransactionState> emit) {
+    // print('hello from on started, ');
     if (state.status == TransactionStatus.success) return;
+    final totalExpense = state.transactions.fold(
+      0.0,
+      (sum, transaction) =>
+          sum + (transaction.isIncome ? 0 : transaction.value),
+    );
+    final totalIncome = state.transactions.fold(
+        0.0,
+        (sum, transaction) =>
+            sum + (transaction.isIncome ? transaction.value : 0));
+    final netBalance = totalExpense - totalIncome;
     emit(state.copyWith(
-        transactions: state.transactions, status: TransactionStatus.success));
+      transactions: state.transactions,
+      status: TransactionStatus.success,
+      totalExpense: totalExpense,
+      totalIncome: totalIncome,
+      netBalance: netBalance,
+    ));
+    // emit(state.copyWith(
+    //     transactions: state.transactions, status: TransactionStatus.success));
   }
 
   void _onAddTransaction(AddTransaction event, Emitter<TransactionState> emit) {
+    print('I am trying to make new  transaction*********************');
     emit(state.copyWith(status: TransactionStatus.loading));
     try {
       List<Transaction> temp = [];
@@ -36,6 +62,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
   void _onRemoveTransaction(
       RemoveTransaction event, Emitter<TransactionState> emit) {
+    print('I am trying to remove the transaction*********************');
     emit(state.copyWith(status: TransactionStatus.loading));
     try {
       state.transactions.remove(event.transaction);
