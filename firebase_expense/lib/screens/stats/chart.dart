@@ -16,6 +16,7 @@ class _MyChartState extends State<MyChart> {
     );
   }
 
+// x value for the y-axis bar and y value is the total value to raise on bar
   BarChartGroupData makeGroupData(int x, double y) {
     return BarChartGroupData(
       x: x,

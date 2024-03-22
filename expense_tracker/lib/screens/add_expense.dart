@@ -8,9 +8,8 @@ import '../widgets/input_form.dart';
 import '../widgets/button.dart';
 
 class AddExpense extends StatefulWidget {
-  const AddExpense({
-    super.key,
-  });
+  final Transaction? transaction;
+  const AddExpense({super.key, this.transaction});
 
   @override
   State<AddExpense> createState() => _AddExpenseState();
@@ -24,9 +23,21 @@ class _AddExpenseState extends State<AddExpense> {
   // to populate a date feild auto populated by default instantancing controller.
   @override
   void initState() {
-    dateController.text = DateFormat('dd/MM/yyyy').format(
-      DateTime.now(),
-    );
+    // dateController.text = DateFormat('dd/MM/yyyy').format(
+    //   DateTime.now(),
+
+    // );
+    if (widget.transaction != null) {
+      // If a transaction is provided, populate the fields with its data
+      expenseController.text = widget.transaction!.value.toString();
+      remarkController.text = widget.transaction!.remark;
+      dateController.text =
+          DateFormat('dd/MM/yyyy').format(widget.transaction!.date);
+      selectDate = widget.transaction!.date;
+    } else {
+      // If no transaction is provided, set default values
+      dateController.text = DateFormat('dd/MM/yyyy').format(DateTime.now());
+    }
     super.initState();
   }
 
@@ -58,9 +69,11 @@ class _AddExpenseState extends State<AddExpense> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text(
-                  'NEW TRANSACTION',
-                  style: TextStyle(
+                Text(
+                  widget.transaction != null
+                      ? 'UPDATE TRANSACTION'
+                      : 'NEW TRANSACTION',
+                  style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.w500,
                     wordSpacing: 3,

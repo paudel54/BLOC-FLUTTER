@@ -25,6 +25,11 @@ class RemoveTransaction extends TransactionEvent {
   List<Object> get props => [transaction];
 }
 
-class UpdateTransaction extends TransactionEvent {}
+class UpdateTransaction extends TransactionEvent {
+  final Transaction transaction;
+  const UpdateTransaction(this.transaction);
+  @override
+  List<Object> get props => [transaction];
+}
 
 class ToggleSwitch extends TransactionEvent {}

@@ -1,18 +1,15 @@
-import 'package:bloc/bloc.dart';
+// import 'package:bloc/bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import '../data/transactions.dart';
 import 'package:equatable/equatable.dart';
 
 part 'transaction_event.dart';
 part 'transaction_state.dart';
 
-class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
+class TransactionBloc extends HydratedBloc<TransactionEvent, TransactionState> {
   TransactionBloc()
       : super(
-          const TransactionState(
-            totalIncome: 0,
-            totalExpense: 0,
-            netBalance: 0,
-          ),
+          const TransactionState(),
         ) {
     on<AppStarted>(_onStarted);
     on<AddTransaction>(_onAddTransaction);
@@ -25,25 +22,14 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   void _onStarted(AppStarted event, Emitter<TransactionState> emit) {
     print('hello from on started, want to computer the list values');
     if (state.status == TransactionStatus.success) return;
-    // final totalExpense = state.transactions.fold(
-    //   0.0,
-    //   (sum, transaction) =>
-    //       sum + (transaction.isIncome ? 0 : transaction.value),
-    // );
-    // final totalIncome = state.transactions.fold(
-    //     0.0,
-    //     (sum, transaction) =>
-    //         sum + (transaction.isIncome ? transaction.value : 0));
-    // final netBalance = totalExpense - totalIncome;
-    // emit(state.copyWith(
-    //   transactions: state.transactions,
-    //   status: TransactionStatus.success,
-    //   totalExpense: totalExpense,
-    //   totalIncome: totalIncome,
-    //   netBalance: netBalance,
-    // ));
-    emit(state.copyWith(
-        transactions: state.transactions, status: TransactionStatus.success));
+    emit(
+      state.copyWith(
+          transactions: state.transactions,
+          status: TransactionStatus.success,
+          totalIncome: state.totalIncome,
+          totalExpense: state.totalExpense,
+          netBalance: state.netBalance),
+    );
   }
 
   void _onCalculateTransactions(
@@ -103,5 +89,17 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
   void _onToggleSwitch(ToggleSwitch event, Emitter<TransactionState> emit) {
     emit(state.copyWith(isSwitch: !state.isSwitch));
+  }
+
+  @override
+  TransactionState? fromJson(Map<String, dynamic> json) {
+    print('1. fromJSON Hydrated ******${json}');
+    return TransactionState.fromJson(json);
+  }
+
+  @override
+  Map<String, dynamic>? toJson(TransactionState state) {
+    print('4 toJson Hydrated Bloc ******* ${state}');
+    return state.toJson();
   }
 }

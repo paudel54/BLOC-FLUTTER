@@ -23,12 +23,12 @@ class TodoState extends Equatable {
   @override
   factory TodoState.fromJson(Map<String, dynamic> json) {
     try {
-      print('JSON before mapping: $json');
-      print('2 from the from json in  the todo_state.dart');
+      // print('JSON before mapping: $json');
+      // print('2 from the from json in  the todo_state.dart');
       var listOfTodos = (json['todo'] as List<dynamic>)
           .map((e) => Todo.fromJson(e as Map<String, dynamic>))
           .toList();
-      print('List of todos after mapping: $listOfTodos');
+      // print('List of todos after mapping: $listOfTodos');
       return TodoState(
           todos: listOfTodos,
           status: TodoStatus.values.firstWhere(
@@ -39,7 +39,7 @@ class TodoState extends Equatable {
   }
 
   Map<String, dynamic> toJson() {
-    print('5 i am from todo_state toJson function');
+    // print('5 i am from todo_state toJson function');
     return {'todo': todos, 'status': status.name};
   }
 

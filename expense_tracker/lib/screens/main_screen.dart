@@ -1,5 +1,6 @@
 import 'package:expense_tracker/bloc/transaction_bloc.dart';
 import 'package:expense_tracker/data/transactions.dart';
+import 'package:expense_tracker/screens/add_expense.dart';
 import 'package:expense_tracker/widgets/income_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -203,99 +204,111 @@ class MainScreen extends StatelessWidget {
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Slidable(
-                              key: const ValueKey(0),
-                              startActionPane: ActionPane(
-                                motion: const ScrollMotion(),
-                                children: [
-                                  SlidableAction(
-                                    onPressed: (_) {
-                                      // print(
-                                      //     'triggering remove Transaction event***** ${state.transactions[i]}');
-                                      removeTransaction(state.transactions[i]);
-                                    },
-                                    backgroundColor: Colors.red,
-                                    foregroundColor: Colors.white,
-                                    icon: Icons.delete,
-                                    label: 'Delete',
-                                  )
-                                ],
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                            child: GestureDetector(
+                              // logic on long press to update the state of transaction.
+                              onLongPress: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AddExpense(
+                                    transaction: state.transactions[i],
+                                  ),
+                                );
+                              },
+                              child: Slidable(
+                                key: const ValueKey(0),
+                                startActionPane: ActionPane(
+                                  motion: const ScrollMotion(),
                                   children: [
-                                    Row(
-                                      children: [
-                                        Stack(
-                                          alignment: Alignment.center,
-                                          children: [
-                                            Container(
-                                              width: 38,
-                                              height: 38,
-                                              decoration: BoxDecoration(
-                                                color: Colors.grey[400],
-                                                shape: BoxShape.circle,
-                                              ),
-                                            ),
-                                            // transactionsData[i]['icon'],
-                                            const Icon(
-                                              Icons.currency_rupee,
-                                              color: Colors.white,
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          width: 12,
-                                        ),
-                                        Text(
-                                          // transactionsData[i]['name'],
-                                          // 'Food',
-                                          state.transactions[i].remark,
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onBackground,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          // transactionsData[i]['totalAmount'],
-                                          // 'Rs.698',
-                                          'Rs: ${state.transactions[i].value.toString()}',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: state.transactions[i]
-                                                        .isIncome ==
-                                                    true
-                                                ? Colors.green
-                                                : Colors.red,
-                                          ),
-                                        ),
-                                        Text(
-                                          // state.transactions[i].date.toString(),
-                                          DateFormat('yyyy-MM-dd').format(
-                                              state.transactions[i].date),
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .outline,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ],
+                                    SlidableAction(
+                                      onPressed: (_) {
+                                        // print(
+                                        //     'triggering remove Transaction event***** ${state.transactions[i]}');
+                                        removeTransaction(
+                                            state.transactions[i]);
+                                      },
+                                      backgroundColor: Colors.red,
+                                      foregroundColor: Colors.white,
+                                      icon: Icons.delete,
+                                      label: 'Delete',
                                     )
                                   ],
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              Container(
+                                                width: 38,
+                                                height: 38,
+                                                decoration: BoxDecoration(
+                                                  color: Colors.grey[400],
+                                                  shape: BoxShape.circle,
+                                                ),
+                                              ),
+                                              // transactionsData[i]['icon'],
+                                              const Icon(
+                                                Icons.currency_rupee,
+                                                color: Colors.white,
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            width: 12,
+                                          ),
+                                          Text(
+                                            // transactionsData[i]['name'],
+                                            // 'Food',
+                                            state.transactions[i].remark,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onBackground,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            // transactionsData[i]['totalAmount'],
+                                            // 'Rs.698',
+                                            'Rs: ${state.transactions[i].value.toString()}',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: state.transactions[i]
+                                                          .isIncome ==
+                                                      true
+                                                  ? Colors.green
+                                                  : Colors.red,
+                                            ),
+                                          ),
+                                          Text(
+                                            // state.transactions[i].date.toString(),
+                                            DateFormat('yyyy-MM-dd').format(
+                                                state.transactions[i].date),
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .outline,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

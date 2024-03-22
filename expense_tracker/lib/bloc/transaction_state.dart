@@ -15,9 +15,9 @@ class TransactionState extends Equatable {
     this.transactions = const <Transaction>[],
     this.status = TransactionStatus.initial,
     this.isSwitch = false,
-    required this.totalExpense,
-    required this.totalIncome,
-    required this.netBalance,
+    this.totalIncome = 0.0,
+    this.totalExpense = 0.0,
+    this.netBalance = 0.0,
   });
 
   TransactionState copyWith({
@@ -38,23 +38,40 @@ class TransactionState extends Equatable {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'transactions': transactions,
-      'status': status.name,
-      'isSwitch': isSwitch,
-    };
+  @override
+  factory TransactionState.fromJson(Map<String, dynamic> json) {
+    try {
+      print('2. fromJSON State *****check null values ${json}');
+      var listOfTransactions = (json['transactions'] as List<dynamic>)
+          .map((item) => Transaction.fromJson(item))
+          .toList();
+      return TransactionState(
+        transactions: listOfTransactions,
+        status: TransactionStatus.values
+            .firstWhere((e) => e.toString() == json['status']),
+        isSwitch: json['isSwitch'],
+        totalExpense: json['totalExpense'],
+        totalIncome: json['totalIncome'],
+        netBalance: json['netBalance'],
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
-  // factory TransactionState.fromJson(Map<String, dynamic> json) {
-  //   return TransactionState(
-  //     transactions: (json['transactions'] as List<dynamic>)
-  //         .map((item) => Transaction.fromJson(item))
-  //         .toList(),
-  //     status: TransactionStatus.values
-  //         .firstWhere((e) => e.toString() == json['status']),
-  //   );
-  // }
+  Map<String, dynamic> toJson() {
+    print('5. toJSON State ****');
+    return {
+      'status': status.name,
+      // suggestion
+      'transactions':
+          transactions.map((transaction) => transaction.toJson()).toList(),
+      'isSwitch': isSwitch,
+      'totalExpense': totalExpense,
+      'totalIncome': totalIncome,
+      'netBalance': netBalance,
+    };
+  }
 
   @override
   List<Object?> get props =>
