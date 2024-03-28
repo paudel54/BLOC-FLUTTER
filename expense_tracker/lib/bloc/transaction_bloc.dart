@@ -85,7 +85,35 @@ class TransactionBloc extends HydratedBloc<TransactionEvent, TransactionState> {
   }
 
   void _onUpdateTransaction(
-      UpdateTransaction event, Emitter<TransactionState> emit) {}
+      UpdateTransaction event, Emitter<TransactionState> emit) {
+    // final int index = state.transactions.indexWhere(
+    //   (transaction) => transaction.id == event.updatedTransaction.id,);
+    final int index = event.index;
+
+    print('chking th value of index received from the event ${index}');
+    if (index != -1) {
+      try {
+        final List<Transaction> updatedTransactions =
+            List.from(state.transactions);
+        updatedTransactions[index] = event.updatedTransaction;
+
+        // Emit a state with the updated list and recalculated values
+        emit(
+          TransactionsUpdated(updatedTransactions),
+        );
+
+        _onCalculateTransactions(
+            CalculateTransaction(), emit); // Recalculate totals
+      } catch (error) {
+        emit(TransactionUpdateFailed(error));
+      }
+    } else {
+      // Handle transaction not found scenario (optional)
+      emit(TransactionUpdateFailed(
+        'Transaction with ID ${event.updatedTransaction.id} not found',
+      ));
+    }
+  }
 
   void _onToggleSwitch(ToggleSwitch event, Emitter<TransactionState> emit) {
     emit(state.copyWith(isSwitch: !state.isSwitch));

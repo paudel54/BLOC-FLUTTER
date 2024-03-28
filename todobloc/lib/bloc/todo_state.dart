@@ -7,6 +7,7 @@ class TodoState extends Equatable {
   final List<Todo> todos;
   final TodoStatus status;
 
+// when app gets installed for very first time this is initialized.
   const TodoState(
       {this.todos = const <Todo>[], this.status = TodoStatus.initial});
 
@@ -20,15 +21,17 @@ class TodoState extends Equatable {
     );
   }
 
+// extracting and parsing
   @override
   factory TodoState.fromJson(Map<String, dynamic> json) {
     try {
-      // print('JSON before mapping: $json');
-      // print('2 from the from json in  the todo_state.dart');
-      var listOfTodos = (json['todo'] as List<dynamic>)
-          .map((e) => Todo.fromJson(e as Map<String, dynamic>))
+      print('JSON before mapping to obj: $json');
+      print('2 fromJson todo_state.dart');
+      var listOfTodos = (json['todos'] as List<dynamic>)
+          // from json is used from data class serialization
+          .map((todoJson) => Todo.fromJson(todoJson as Map<String, dynamic>))
           .toList();
-      // print('List of todos after mapping: $listOfTodos');
+      print('List of todos after mapping: $listOfTodos');
       return TodoState(
           todos: listOfTodos,
           status: TodoStatus.values.firstWhere(
@@ -39,8 +42,16 @@ class TodoState extends Equatable {
   }
 
   Map<String, dynamic> toJson() {
-    // print('5 i am from todo_state toJson function');
-    return {'todo': todos, 'status': status.name};
+    print('5 toJson todo_state');
+
+    return {
+      // we are consuming the toJson model from date model or data.dart
+      //creates list for JSON encoding [{"key":"v1"}]
+
+      // here toJson method is used from data class. todo.dart
+      'todos': todos.map((todo) => todo.toJson()).toList(),
+      'status': status.name
+    };
   }
 
   @override

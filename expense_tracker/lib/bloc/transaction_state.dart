@@ -77,3 +77,24 @@ class TransactionState extends Equatable {
   List<Object?> get props =>
       [transactions, status, isSwitch, totalExpense, totalIncome, netBalance];
 }
+
+// ... other states
+class TransactionInitial extends TransactionState {}
+
+class TransactionsUpdated extends TransactionState {
+  final List<Transaction> transactions;
+
+  const TransactionsUpdated(this.transactions);
+
+  @override
+  List<Object> get props => [transactions];
+}
+
+class TransactionUpdateFailed extends TransactionState {
+  final Object error;
+
+  const TransactionUpdateFailed(this.error);
+
+  @override
+  List<Object> get props => [error];
+}

@@ -9,7 +9,8 @@ import '../widgets/button.dart';
 
 class AddExpense extends StatefulWidget {
   final Transaction? transaction;
-  const AddExpense({super.key, this.transaction});
+  final int? index;
+  const AddExpense({super.key, this.transaction, this.index});
 
   @override
   State<AddExpense> createState() => _AddExpenseState();
@@ -51,6 +52,12 @@ class _AddExpenseState extends State<AddExpense> {
   removeTransaction(Transaction transaction) {
     context.read<TransactionBloc>().add(
           RemoveTransaction(transaction),
+        );
+  }
+
+  updateTransaction(Transaction transaction, int index) {
+    context.read<TransactionBloc>().add(
+          UpdateTransaction(transaction, index),
         );
   }
 
@@ -166,12 +173,38 @@ class _AddExpenseState extends State<AddExpense> {
                   builder: (context, state) {
                     return CustomTextButton(
                       text: 'Save',
+                      // onPressed: () {
+                      //   // if widget.transaction !== null update transaction
+                      //   addTransaction(Transaction(
+                      //       value: double.parse(expenseController.text),
+                      //       isIncome: state.isSwitch,
+                      //       remark: remarkController.text,
+                      //       date: selectDate));
+                      //   expenseController.text = '';
+                      //   remarkController.text = '';
+                      //   Navigator.pop(context);
+                      // },
                       onPressed: () {
-                        addTransaction(Transaction(
-                            value: double.parse(expenseController.text),
-                            isIncome: state.isSwitch,
-                            remark: remarkController.text,
-                            date: selectDate));
+                        if (widget.index != null) {
+                          updateTransaction(
+                              Transaction(
+                                value: double.parse(expenseController.text),
+                                isIncome: state.isSwitch,
+                                remark: remarkController.text,
+                                date: selectDate,
+                              ),
+                              widget.index!);
+                        } else {
+                          // Add new transaction
+                          addTransaction(
+                            Transaction(
+                              value: double.parse(expenseController.text),
+                              isIncome: state.isSwitch,
+                              remark: remarkController.text,
+                              date: selectDate,
+                            ),
+                          );
+                        }
                         expenseController.text = '';
                         remarkController.text = '';
                         Navigator.pop(context);

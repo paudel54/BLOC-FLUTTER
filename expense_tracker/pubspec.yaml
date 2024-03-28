@@ -41,6 +41,7 @@ dependencies:
   flutter_slidable: ^3.1.0
   hydrated_bloc: ^9.1.4
   path_provider: ^2.1.2
+  uuid: ^4.3.2
 
 dev_dependencies:
   flutter_test:

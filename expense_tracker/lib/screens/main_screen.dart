@@ -211,6 +211,7 @@ class MainScreen extends StatelessWidget {
                                   context: context,
                                   builder: (context) => AddExpense(
                                     transaction: state.transactions[i],
+                                    index: i,
                                   ),
                                 );
                               },
@@ -321,7 +322,12 @@ class MainScreen extends StatelessWidget {
                       child: CircularProgressIndicator(),
                     );
                   } else {
-                    return Container();
+                    return Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.orange,
+                      ),
+                      child: const Text('Error'),
+                    );
                   }
                 },
               ),

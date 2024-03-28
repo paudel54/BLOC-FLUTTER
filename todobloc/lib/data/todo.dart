@@ -15,9 +15,11 @@ class Todo {
     );
   }
 
+// here toJson and from json are consumed on bloc state.
+
 //Create todo object from JSON map.
   factory Todo.fromJson(Map<String, dynamic> json) {
-    print('3 from the from json in data todo.dart');
+    print('3 fromJson in data todo.dart');
     return Todo(
         title: json['title'],
         subtitle: json['subtitle'],
@@ -25,7 +27,7 @@ class Todo {
   }
 //convert Todo object to json map
   Map<String, dynamic> toJson() {
-    print('6 from the to json in data todo.dart');
+    print('6 toJson R data todo.dart');
     return {'title': title, 'subtitle': subtitle, 'isDone': isDone};
   }
 }
